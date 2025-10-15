@@ -18,7 +18,20 @@
 Fungsi utama sistem operasi adalah mengelola sumber daya perangkat keras dan perangkat lunak, menyediakan antarmuka antara pengguna dan komputer, serta menjalankan program dengan efisien. Panel adalah komponen dari antarmuka pengguna grafis (GUI) yang memungkinkan pengguna berinteraksi dengan sistem operasi melalui elemen visual seperti ikon dan jendela. Sementara itu, system call adalah jembatan yang memungkinkan program meminta layanan tertentu dari sistem operasi, seperti membaca file atau mengontrol proses, tanpa perlu mengetahui detail kerja perangkat kerasnya
 
 ## Dasar Teori
-Tuliskan ringkasan teori (3–5 poin) yang mendasari percobaan.
+1. Sistem Operasi dan Kernel
+Ini adalah teori utama karena semua perintah ini berinteraksi langsung atau tidak langsung dengan Kernel Linux, yaitu inti dari sistem operasi.
+
+uname -a (Unix Name): Berdasarkan teori tentang Identifikasi Sistem dan Versi Kernel. Perintah ini menampilkan semua informasi sistem, termasuk nama kernel, nama hostname, rilis kernel, versi kernel, jenis mesin, dan sistem operasi. Ini adalah dasar dari manajemen sumber daya dan kompatibilitas perangkat keras/lunak dalam OS.
+
+(Display Message Buffer): Berdasarkan teori tentang Manajemen Log Kernel dan Mekanisme Booting. Perintah ini menampilkan pesan dari Kernel Ring Buffer. Pesan-pesan ini dicatat oleh kernel selama booting dan saat driver perangkat keras berinteraksi. Ini adalah konsep kunci dalam debugging kernel dan diagnostik perangkat keras.
+
+2. Manajemen Pengguna dan Keamanan
+Perintah ini terkait dengan teori tentang Manajemen Akun Pengguna dan Privilese.
+
+whoami: Berdasarkan teori tentang Identifikasi Pengguna dan Autentikasi. Perintah ini menampilkan nama pengguna efektif dari sesi terminal saat ini. Hal ini fundamental untuk konsep keamanan sistem dan kontrol akses.
+
+
+
 
 ---
 
