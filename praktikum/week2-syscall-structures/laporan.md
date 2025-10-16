@@ -108,6 +108,11 @@ strace ls
 strace -e trace=open,read,write,close cat /etc/passwd
 dmesg | tail -n 10
 ```
+<img width="1919" height="1079" alt="Screenshot 2025-10-16 122558" src="https://github.com/user-attachments/assets/bcedb2a7-f09b-4bc4-ab9d-763a06cde382" />
+<img width="1898" height="1063" alt="Screenshot 2025-10-16 123006" src="https://github.com/user-attachments/assets/bb7b5267-142e-4f3f-a474-a1760ebe46e9" />
+
+
+<img width="1918" height="1079" alt="Screenshot 2025-10-16 122733" src="https://github.com/user-attachments/assets/e44db8d6-8fd0-41bb-b070-7302a4c64c02" />
 
 ---
 
