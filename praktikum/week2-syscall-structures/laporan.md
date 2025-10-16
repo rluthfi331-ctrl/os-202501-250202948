@@ -328,8 +328,8 @@ Ini menyebabkan CPU berpindah dari mode user ke mode kernel, lalu kembali setela
 
 ## Refleksi Diri
 Tuliskan secara singkat:
-- Apa bagian yang paling menantang minggu ini?  
-- Bagaimana cara Anda mengatasinya?  
+- mengalahlakan rasa malas 
+- ada sedikit kendakala di ubutu 
 
 ---
 
