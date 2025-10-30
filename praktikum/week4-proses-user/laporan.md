@@ -1,6 +1,6 @@
 
-# Laporan Praktikum Minggu [X]
-Topik: [Tuliskan judul topik, misalnya "Arsitektur Sistem Operasi dan Kernel"]
+# Laporan Praktikum Minggu [4]
+Topik: [proses user]
 
 ---
 
@@ -136,76 +136,6 @@ Manajemen user berperan penting dalam **keamanan sistem Linux**, karena:
 
 
 ## Dasar Teori
-1. Jelaskan setiap output dan fungsinya.
-2. Jelaskan kolom penting seperti PID, USER, %CPU, %MEM, COMMAND.
-3. Amati hierarki proses dan identifikasi proses induk (init/systemd)
-
-### **1. Penjelasan setiap output dan fungsinya**
-
-Ketika kamu menjalankan perintah seperti `ps aux`, `top`, atau `htop` di Linux, kamu akan melihat daftar **proses** yang sedang berjalan.
-Setiap baris menunjukkan **satu proses** yang aktif di sistem.
-Fungsi utamanya adalah untuk **memantau dan mengelola proses** — misalnya mengetahui siapa pemilik proses, berapa besar CPU/memori yang digunakan, dan apa perintah yang dijalankan.
-
-Contoh output dari `ps aux`:
-
-```
-USER       PID  %CPU %MEM    VSZ   RSS TTY      STAT START   TIME COMMAND
-root         1   0.0  0.1 167920  8300 ?        Ss   10:00   0:03 /sbin/init
-user      2145   1.2  2.3 812340 94800 ?        Sl   10:15   1:45 /usr/bin/gnome-shell
-user      3321   0.3  0.8 465120 32240 pts/0    R+   10:35   0:01 ps aux
-```
-
----
-
-### **2. Penjelasan kolom penting**
-
-| Kolom                | Keterangan                                                                                                              |
-| -------------------- | ----------------------------------------------------------------------------------------------------------------------- |
-| **USER**             | Menunjukkan nama user (pemilik proses). Misalnya `root`, `user`, `daemon`.                                              |
-| **PID (Process ID)** | Nomor unik untuk setiap proses. Digunakan untuk mengontrol atau menghentikan proses dengan perintah seperti `kill PID`. |
-| **%CPU**             | Persentase penggunaan CPU oleh proses tersebut. Nilai tinggi berarti proses menggunakan banyak sumber daya prosesor.    |
-| **%MEM**             | Persentase penggunaan memori RAM oleh proses tersebut. Berguna untuk mendeteksi proses yang boros memori.               |
-| **VSZ**              | Virtual memory size – total memori virtual (dalam KB) yang digunakan proses.                                            |
-| **RSS**              | Resident Set Size – memori fisik aktual (RAM) yang digunakan proses.                                                    |
-| **TTY**              | Terminal terkait proses (misalnya `pts/0` untuk terminal aktif, atau `?` jika tidak terkait terminal).                  |
-| **STAT**             | Status proses:                                                                                                          |
-
-* **R** = Running
-* **S** = Sleeping (idle)
-* **T** = Stopped
-* **Z** = Zombie (sudah berhenti tapi belum dihapus)
-* **Ss** = Sleeping dengan status proses sistem |
-  | **START** | Waktu atau tanggal kapan proses dimulai. |
-  | **TIME** | Total waktu CPU yang sudah digunakan oleh proses. |
-  | **COMMAND** | Perintah atau program yang dijalankan (misalnya `/sbin/init`, `bash`, `firefox`). |
-
----
-
-### **3. Hierarki proses dan identifikasi proses induk**
-
-Di Linux, setiap proses memiliki **proses induk (parent process)**, kecuali proses pertama di sistem yaitu **`init` atau `systemd`**.
-
-Kamu dapat melihat **hierarki proses** menggunakan perintah:
-
-```bash
-pstree
-```
-
-Contoh output:
-
-```
-systemd─┬─NetworkManager───{NetworkManager}
-        ├─sshd───bash───pstree
-        ├─gnome-shell───Xorg
-        └─cron───cronjob.sh
-```
-
-**Penjelasan:**
-
-* **systemd** → adalah **proses induk utama (PID 1)** yang dijalankan pertama kali saat sistem boot.
-  Semua proses lain merupakan turunan (anak) dari `systemd`.
-* **NetworkManager**, **sshd**, **gnome-shell**, **cron** → adalah proses turunan dari `systemd`.
-* Misalnya, `sshd` memiliki proses anak `bash`, dan `bash` kemudian menjalankan `pstree`.
 
 ---
 
@@ -227,30 +157,197 @@ systemd─┬─NetworkManager───{NetworkManager}
 ---
 
 ## Kode / Perintah
-Tuliskan potongan kode atau perintah utama:
-```bash
-uname -a
-lsmod | head
-dmesg | head
-```
+1. **Setup Environment**
+   - Gunakan Linux (Ubuntu/WSL).  
+   - Pastikan Anda sudah login sebagai user non-root.  
+   - Siapkan folder kerja:
+     ```
+     praktikum/week4-proses-user/
+     ```
 
+2. **Eksperimen 1 – Identitas User**
+   Jalankan perintah berikut:
+   ```bash
+   whoami
+   id
+   groups
+   ```
+   - Jelaskan setiap output dan fungsinya.  
+   - Buat user baru (jika memiliki izin sudo):
+     ```bash
+     sudo adduser praktikan
+     sudo passwd praktikan
+     ```
+   - Uji login ke user baru.
+
+3. **Eksperimen 2 – Monitoring Proses**
+   Jalankan:
+   ```bash
+   ps aux | head -10
+   top -n 1
+   ```
+   - Jelaskan kolom penting seperti PID, USER, %CPU, %MEM, COMMAND.  
+   - Simpan tangkapan layar `top` ke:
+     ```
+     praktikum/week4-proses-user/screenshots/top.png
+     ```
+
+4. **Eksperimen 3 – Kontrol Proses**
+   - Jalankan program latar belakang:
+     ```bash
+     sleep 1000 &
+     ps aux | grep sleep
+     ```
+   - Catat PID proses `sleep`.  
+   - Hentikan proses:
+     ```bash
+     kill <PID>
+     ```
+   - Pastikan proses telah berhenti dengan `ps aux | grep sleep`.
+
+5. **Eksperimen 4 – Analisis Hierarki Proses**
+   Jalankan:
+   ```bash
+   pstree -p | head -20
+   ```
+   - Amati hierarki proses dan identifikasi proses induk (`init`/`systemd`).  
+   - Catat hasilnya dalam laporan.
+
+6. **Commit & Push**
+   ```bash
+   git add .
+   git commit -m "Minggu 4 - Manajemen Proses & User"
+   git push origin main
+   ``` 
 ---
 
 ## Hasil Eksekusi
-Sertakan screenshot hasil percobaan atau diagram:
-![Screenshot hasil](screenshots/example.png)
+
 
 ---
 
 ## Analisis
-- Jelaskan makna hasil percobaan.  
-- Hubungkan hasil dengan teori (fungsi kernel, system call, arsitektur OS).  
-- Apa perbedaan hasil di lingkungan OS berbeda (Linux vs Windows)?  
+- Jelaskan setiap output dan fungsinya.
+- Jelaskan kolom penting seperti PID, USER, %CPU, %MEM, COMMAND.
+- Catat PID proses sleep.
+- Amati hierarki proses dan identifikasi proses induk (init/systemd).
+ ### 1. Jelaskan setiap output dan fungsinya.
+1. Perintah `whoami`
 
----
+Fungsi:
+Menampilkan nama user yang sedang login atau menjalankan shell saat ini.
+
+Contoh output:
+`whoami`
+``` bash 
+lutfi
+```
+
+Penjelasan:
+Output lutfi menunjukkan bahwa user aktif saat ini adalah lutfi.
+Perintah ini sangat sederhana — berguna untuk cepat mengecek user saat ini, terutama saat menggunakan sudo atau berpindah user dengan su.
+
+2. Perintah `id`
+
+Fungsi:Menampilkan informasi identitas user dalam bentuk angka dan nama, termasuk,UID (User ID),GID (Group ID),Grup tambahan yang diikuti user
+
+Contoh output:`id`
+``` bash 
+uid=1000(lutfi) gid=1000(lutfi) groups=1000(lutfi),27(sudo),1001(project)
+```
+
+Penjelasan setiap bagian:
+- uid=1000(lutfi) → ID unik untuk user lutfi.
+- gid=1000(lutfi) → ID grup utama user lutfi.
+- groups=... → daftar semua grup yang diikuti user:
+- 1000(lutfi) = grup utama
+- 27(sudo) = grup dengan hak administratif
+- 1001(project) = grup tambahan
+
+Fungsi penting: membantu administrator mengetahui hak akses dan keanggotaan grup user.
+
+3. Perintah `groups`
+
+Fungsi: Menampilkan semua grup yang diikuti oleh user saat ini (lebih ringkas dari id).
+
+Contoh output:
+
+`groups` 
+``` bash
+lutfi sudo project
+```
+
+Penjelasan:
+
+lutfi → grup utama user
+
+sudo dan project → grup tambahan
+Artinya user lutfi memiliki hak sebagai anggota grup sudo dan project.
+
+ ### 2. jelaskan kolom penting seperti PID, USER, %CPU, %MEM, COMMAND.
+ | Kolom                | Arti / Fungsi                                                                                                                                                                     |
+| -------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| **USER**             | Menunjukkan **nama user (pengguna)** yang menjalankan proses tersebut. Contoh: `root`, `student`, `www-data`. Ini penting untuk keamanan karena menunjukkan siapa pemilik proses. |
+| **PID (Process ID)** | Nomor unik yang diberikan sistem kepada setiap proses yang berjalan. Digunakan untuk **mengidentifikasi** dan **mengontrol** proses (misalnya dengan `kill PID`).                 |
+| **%CPU**             | Menunjukkan **persentase penggunaan CPU** oleh proses tersebut. Semakin tinggi nilainya, semakin besar beban CPU yang digunakan.                                                  |
+| **%MEM**             | Persentase **penggunaan memori (RAM)** oleh proses. Berguna untuk memantau proses yang mengonsumsi banyak memori.                                                                 |
+| **COMMAND**          | Menampilkan **nama program atau perintah** yang dijalankan beserta argumennya. Contoh: `/usr/bin/firefox`, `bash`, `systemd`.                                                     |
+
+USER       PID %CPU %MEM    VSZ   RSS TTY      STAT START   TIME COMMAND
+root         1  0.0  0.1 168056  9580 ?        Ss   Oct27   0:05 /sbin/init
+student  12456  1.2  2.3 512300 47200 ?        Sl   19:10   0:12 /usr/bin/gnome-terminal
+student  12489  0.3  1.0 305000 21000 pts/0    Ss   19:11   0:02 bash
+student  12502  5.6  4.2 175630 86000 pts/0    R+   19:12   0:30 top
+
+Penjelasan per baris:
+
+Baris 1: Proses init dijalankan oleh root, dengan PID 1. Ini adalah proses induk pertama di sistem Linux.
+
+Baris 2: Proses terminal GNOME dijalankan oleh user student. Menggunakan CPU 1.2% dan memori 2.3%.
+
+Baris 3: Shell bash yang aktif di terminal.
+
+Baris 4: Perintah top sedang berjalan, menunjukkan daftar proses real-time.
+
+systemd─┬─NetworkManager───dhclient
+        ├─sshd───sshd───bash───top
+        ├─gnome-terminal───bash───ps
+        └─udisksd
+
+Penjelasan:
+
+systemd adalah proses induk utama dengan PID = 1.
+➜ Dialah yang pertama kali dijalankan oleh kernel saat booting.
+➜ Semua proses lain merupakan anak (langsung/tidak langsung) dari systemd.
+
+sshd, bash, dan top adalah proses anak dari systemd.
+
+Jika kamu menutup terminal, proses anak seperti bash atau top juga ikut berhenti.
+
+### 3. 
+
+### **4. Hierarki proses dan identifikasi proses induk**
+
+Di Linux, setiap proses memiliki **proses induk (parent process)**, kecuali proses pertama di sistem yaitu **`init` atau `systemd`**.
+
+Kamu dapat melihat **hierarki proses** menggunakan perintah:
+
+``` bash
+pstree
+```
+
+Contoh output:
+
+```
+systemd─┬─NetworkManager───{NetworkManager}
+        ├─sshd───bash───pstree
+        ├─gnome-shell───Xorg
+        └─cron───cronjob.sh
+```
 
 ## Kesimpulan
-Tuliskan 2–3 poin kesimpulan dari praktikum ini.
+kesimpulan proses user
+Hubungan antara proses dan user menunjukkan bahwa setiap aktivitas di Linux dijalankan atas nama user tertentu, dengan hak akses yang sesuai. Manajemen proses dan user yang baik sangat penting untuk menjaga stabilitas, efisiensi, dan keamanan sistem operasi Linux.
 
 ---
 
@@ -307,55 +404,64 @@ User **root** adalah **superuser** — akun dengan **akses penuh ke seluruh sist
 
 
 ## **1. Dokumentasikan hasil semua perintah dan jelaskan fungsinya**
+1. whoami
 
-| **Perintah**                | **Hasil (Contoh Output)**                                     | **Fungsi / Penjelasan**                                                                |
-| --------------------------- | ------------------------------------------------------------- | -------------------------------------------------------------------------------------- |
-| `ps`                        | Menampilkan daftar proses aktif (misal: PID, TTY, TIME, CMD)  | Menunjukkan proses yang sedang berjalan di terminal saat ini.                          |
-| `ps -ef`                    | Menampilkan semua proses secara lengkap (dari semua user)     | Memberikan tampilan penuh proses dengan UID, PID, PPID, waktu mulai, dan perintah.     |
-| `top`                       | Menampilkan proses yang sedang berjalan secara dinamis        | Digunakan untuk memantau penggunaan CPU, memori, dan beban sistem secara real-time.    |
-| `htop`                      | (Jika tersedia) Menampilkan proses dalam antarmuka interaktif | Versi lebih user-friendly dari `top`, memungkinkan scroll dan kill proses langsung.    |
-| `pstree`                    | Menampilkan proses dalam bentuk pohon hierarki                | Menunjukkan hubungan induk–anak antara proses dalam sistem.                            |
-| `who`                       | Menampilkan user yang sedang login ke sistem                  | Memantau siapa saja yang sedang menggunakan sistem.                                    |
-| `id`                        | Menampilkan UID, GID, dan grup tambahan user                  | Menunjukkan identitas dan hak akses user saat ini.                                     |
-| `adduser namauser`          | Menambahkan user baru ke sistem                               | Membuat akun baru lengkap dengan home directory dan shell bawaan.                      |
-| `deluser namauser`          | Menghapus akun user dari sistem                               | Menghapus user dari sistem (dapat juga menghapus home directory dengan opsi tertentu). |
-| `usermod -aG sudo namauser` | Menambahkan user ke grup `sudo`                               | Memberikan hak administratif (akses root) pada user.                                   |
-| `chmod 755 file`            | Mengubah hak akses file                                       | Memberikan izin `rwxr-xr-x` (pemilik penuh, grup dan others hanya baca/jalankan).      |
-| `chown user:group file`     | Mengubah kepemilikan file                                     | Mengatur siapa pemilik dan grup pemilik suatu file.                                    |
+Perintah whoami digunakan untuk memastikan user yang sedang aktif di terminal. Hasilnya menunjukkan bahwa user yang sedang login adalah luthfi.
 
-> **Catatan:** Semua hasil di atas sebaiknya dicatat di `laporan.md` lengkap dengan *output terminal* (salinan hasil perintah).
+2. id
+
+Perintah id memberikan informasi detail tentang identitas user seperti UID, GID, dan grup yang diikuti. Hasil menunjukkan user luthfi tergabung dalam beberapa grup penting seperti sudo, adm, dan users, menandakan bahwa user ini memiliki hak administratif.
+
+3. groups
+
+Perintah groups menampilkan daftar grup tempat user luthfi tergabung. Ini menunjukkan hak akses tambahan yang dimiliki user, seperti kemampuan mengakses perangkat (plugdev) dan menjalankan perintah administratif (sudo).
+
+4. sudo adduser praktikan
+
+Perintah adduser digunakan untuk menambahkan user baru bernama praktikan ke sistem. Proses ini juga membuat direktori home dan menetapkan password, menunjukkan cara administrator mengelola user baru.
+
+5. sudo passwd praktikan
+
+Perintah ini berhasil mengubah password user praktikan. Ini menunjukkan pentingnya hak akses sudo dalam pengaturan keamanan akun di Linux.
+
+6. ps aux | head -10
+
+Perintah ini menampilkan daftar 10 proses pertama yang sedang berjalan di sistem, termasuk proses milik root dan layanan sistem seperti systemd. Ini membantu memahami aktivitas sistem dan penggunaan sumber daya.
+
+7. top -n 1
+
+top menampilkan penggunaan CPU, memori, dan daftar proses secara real-time. Hasil menunjukkan sistem dalam keadaan ringan dengan hampir seluruh CPU dalam kondisi idle (99.5%). Perintah ini penting untuk memantau performa sistem.
+
+8. sleep 1000 &
+
+Perintah ini menjalankan proses sleep di background selama 1000 detik. Ini menunjukkan cara menjalankan proses secara paralel tanpa mengganggu terminal utama.
+
+9. ps aux | grep sleep
+
+Perintah ini mencari proses dengan nama sleep dan menampilkan PID-nya. Hasil menunjukkan bahwa proses sleep sedang berjalan dengan PID 600, membuktikan bahwa proses background dapat dilacak menggunakan ps dan grep.
+
+10. kill 600
+
+Perintah kill berhasil menghentikan proses sleep dengan PID 600. Ini menunjukkan cara mengontrol atau mengakhiri proses yang tidak dibutuhkan atau bermasalah.
+
+11. pstree -p | head -20
+
+Perintah pstree menampilkan struktur hierarki proses dalam sistem. Hasil menunjukkan bahwa semua proses berawal dari systemd(1) sebagai proses induk utama, lalu bercabang ke berbagai layanan dan shell user. Ini menggambarkan hubungan antara proses induk dan proses anak di Linux.
+|
+---
+
+## **2. Diagram Pohon Hierarki Proses (pstree)**
+
+
+
+
+## ** 3. Jelaskan hubungan antara user management dan keamanan sistem Linux.**
+Manajemen user memiliki peran yang sangat penting dalam menjaga keamanan sistem Linux. Dengan pengaturan user dan grup yang tepat, administrator dapat mengontrol siapa saja yang dapat mengakses sistem serta menentukan hak apa yang dimiliki oleh setiap pengguna. Melalui sistem permission (rwx), kepemilikan file (chown, chgrp), dan pembatasan hak akses root, Linux memastikan bahwa setiap user hanya dapat melakukan tindakan sesuai kewenangannya.Secara keseluruhan, user management dan keamanan sistem Linux saling berkaitan erat — pengelolaan user yang baik akan memperkuat keamanan sistem, sedangkan kelalaian dalam manajemen user dapat membuka celah bagi ancaman keamanan dan penyusupan ke dalam sistem.
+ 
+
 
 ---
 
-## **2. Diagram Hierarki Proses (pstree)**
-
-Contoh hasil perintah:
-
-```bash
-$ pstree
-systemd─┬─NetworkManager───2*[{NetworkManager}]
-        ├─sshd───sshd───bash───pstree
-        ├─cron
-        ├─dbus-daemon
-        ├─gnome-shell───Xorg
-        └─...
-```
-
-**Diagram pohon hierarki proses:**
-
-```
-systemd
-├── NetworkManager
-│   └── {NetworkManager}
-├── sshd
-│   ├── sshd (session user)
-│   │   └── bash
-│   │       └── pstree
-├── cron
-├── dbus-daemon
-└── gnome-shell
-    └── Xorg
-```
 
 **Penjelasan:**
 
@@ -390,8 +496,8 @@ Manajemen user adalah **fondasi utama keamanan Linux**. Dengan mengatur siapa ya
 
 ## Refleksi Diri
 Tuliskan secara singkat:
-- Apa bagian yang paling menantang minggu ini?  
-- Bagaimana cara Anda mengatasinya?  
+- Apa bagian yang paling menantang minggu ini?  leptop kurang mendukung 
+- Bagaimana cara Anda mengatasinya?  meminjam laptop teman
 
 ---
 
