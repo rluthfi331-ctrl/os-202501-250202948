@@ -1,4 +1,5 @@
 
+
 # Laporan Praktikum Minggu [4]
 Topik: [proses user]
 
@@ -447,11 +448,12 @@ Perintah kill berhasil menghentikan proses sleep dengan PID 600. Ini menunjukkan
 11. pstree -p | head -20
 
 Perintah pstree menampilkan struktur hierarki proses dalam sistem. Hasil menunjukkan bahwa semua proses berawal dari systemd(1) sebagai proses induk utama, lalu bercabang ke berbagai layanan dan shell user. Ini menggambarkan hubungan antara proses induk dan proses anak di Linux.
-|
+
 ---
 
 ## **2. Diagram Pohon Hierarki Proses (pstree)**
 
+<img width="1173" height="906" alt="diagram Pohon" src="https://github.com/user-attachments/assets/a8abc6ac-05cf-4bd0-b665-7d589eb34f67" />
 
 
 
