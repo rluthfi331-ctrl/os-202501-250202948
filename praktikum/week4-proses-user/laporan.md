@@ -130,22 +130,31 @@ Manajemen user berperan penting dalam **keamanan sistem Linux**, karena:
 | **Audit & Logging**          | Aktivitas user dapat dilacak melalui log sistem (misal `/var/log/auth.log`) untuk mendeteksi tindakan mencurigakan.                                               |
 | **Prinsip Least Privilege**  | Setiap user hanya diberi hak minimum yang diperlukan, untuk mengurangi risiko kesalahan atau serangan.                                                            |
 
- **Kesimpulan:**
-
-> Pengelolaan user yang baik — dengan izin (`chmod`, `chown`), grup, dan hak akses yang tepat — adalah fondasi utama keamanan sistem Linux.
-
-
+---
 
 ## Dasar Teori
 
----
+1. Konsep Proses dalam Sistem Operasi
 
-### **Kesimpulan**
+- Proses adalah program yang sedang dieksekusi beserta semua konteksnya (seperti memori, status CPU, dan sumber daya lain).
+- Setiap proses memiliki PID (Process ID) unik untuk identifikasi dan dapat membuat proses anak (child process).
+- Linux mengatur proses menggunakan scheduler, yang menentukan urutan eksekusi agar sumber daya CPU digunakan secara efisien.
 
-* Output dari `ps`, `top`, atau `htop` menunjukkan daftar proses yang sedang berjalan beserta penggunaan sumber dayanya.
-* Kolom **PID, USER, %CPU, %MEM, COMMAND** penting untuk memahami siapa yang menjalankan proses dan berapa besar sumber daya yang digunakan.
-* Dengan `pstree`, kamu bisa melihat **struktur pohon proses**, di mana **`systemd` (PID 1)** adalah induk dari seluruh proses di sistem Linux.
 
+2. Konsep User dalam Sistem Operasi
+User adalah identitas yang digunakan untuk mengakses sistem, dilengkapi dengan UID (User ID) dan GID (Group ID).
+Sistem Linux menggunakan manajemen user dan group untuk mengatur hak akses terhadap file, direktori, dan proses.
+
+User dibagi menjadi:
+
+- Root (superuser): memiliki kontrol penuh terhadap sistem.
+- User biasa: memiliki hak terbatas demi keamanan.
+
+
+3. Hubungan Proses dan User terhadap Keamanan Sistem
+- Setiap proses di Linux berjalan atas nama user tertentu, sehingga hak akses proses dibatasi oleh izin user tersebut.
+- Mekanisme ini mencegah proses milik user biasa mengubah konfigurasi sistem atau membaca data user lain.
+- Dengan demikian, manajemen user dan proses menjadi bagian penting dari kontrol keamanan dan isolasi sistem operasi.
 
 ---
 
@@ -223,6 +232,14 @@ Manajemen user berperan penting dalam **keamanan sistem Linux**, karena:
 ---
 
 ## Hasil Eksekusi
+
+<img width="1919" height="1079" alt="Screenshot 2025-10-30 090853" src="https://github.com/user-attachments/assets/ae1f63f8-452d-4cc9-af32-5dd7ac658e3b" />
+
+<img width="1919" height="1078" alt="Screenshot 2025-10-30 090909" src="https://github.com/user-attachments/assets/8142759a-32a1-40f3-826d-4b2e61e39080" />
+
+<img width="1919" height="1078" alt="Screenshot 2025-10-30 090932" src="https://github.com/user-attachments/assets/94a11ccd-041e-4aee-9215-63c8778d47fc" />
+
+
 
 
 ---
@@ -492,7 +509,12 @@ Manajemen user sangat berperan penting dalam **keamanan sistem Linux**, karena s
 
 ### **Kesimpulan:**
 
-Manajemen user adalah **fondasi utama keamanan Linux**. Dengan mengatur siapa yang dapat mengakses apa, sistem dapat mencegah kebocoran data, perubahan konfigurasi tidak sah, dan serangan internal. Kombinasi dari user, grup, permission (`chmod`), dan ownership (`chown`) menjaga sistem tetap aman dan terkontrol.
+Proses dan user merupakan dua komponen utama yang saling berkaitan dalam sistem operasi Linux.Proses adalah satuan kerja yang mewakili program yang sedang berjalan, dikelola langsung oleh kernel untuk memastikan penggunaan sumber daya yang efisien dan stabil.User berperan sebagai identitas yang menentukan hak akses terhadap sistem dan proses yang dijalankan.Setiap proses berjalan atas nama user tertentu, sehingga hak akses dan batasan keamanan sistem dapat dikontrol dengan ketat.Dengan demikian, manajemen proses dan user menjadi dasar dalam menjaga stabilitas, efisiensi, dan keamanan sistem Linux, memastikan bahwa setiap pengguna hanya dapat mengakses dan mengelola sumber daya sesuai kewenangannya.
+
+* Output dari `ps`, `top`, atau `htop` menunjukkan daftar proses yang sedang berjalan beserta penggunaan sumber dayanya.
+* Kolom **PID, USER, %CPU, %MEM, COMMAND** penting untuk memahami siapa yang menjalankan proses dan berapa besar sumber daya yang digunakan.
+* Dengan `pstree`, kamu bisa melihat **struktur pohon proses**, di mana **`systemd` (PID 1)** adalah induk dari seluruh proses di sistem Linux.
+
 
 
 
