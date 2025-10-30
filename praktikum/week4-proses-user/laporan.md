@@ -343,6 +343,8 @@ sshd, bash, dan top adalah proses anak dari systemd.
 Jika kamu menutup terminal, proses anak seperti bash atau top juga ikut berhenti.
 
 ### 3. 
+- luthfi       600  0.0  0.0   3124  1664 pts/0    S    09:07   0:00 sleep 1000
+- luthfi       604  0.0  0.0   4088  1920 pts/0    S+   09:07   0:00 grep --color=auto sleep
 
 ### **4. Hierarki proses dan identifikasi proses induk**
 
