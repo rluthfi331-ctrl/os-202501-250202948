@@ -486,8 +486,8 @@ Tidak cocok untuk sistem interaktif — karena membutuhkan prediksi waktu proses
 
 ## Refleksi Diri
 Tuliskan secara singkat:
-- Apa bagian yang paling menantang minggu ini?  
-- Bagaimana cara Anda mengatasinya?  
+- Apa bagian yang paling menantang minggu ini?  belum memahami tentang FCFS dan SJF
+- Bagaimana cara Anda mengatasinya?  dengan mencari referensi di web site atau Ai
 
 ---
 

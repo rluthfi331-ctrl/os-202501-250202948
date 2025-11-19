@@ -72,6 +72,11 @@ Sertakan screenshot hasil percobaan atau diagram:
 ![Screenshot hasil](screenshots/example.png)
 ![alt text](RR_PRIORITY.png)
 
+					
+
+<img width="984" height="223" alt="image" src="https://github.com/user-attachments/assets/db1a43a4-ad1f-4dd5-9f46-ad2340a3e6b4" />
+
+
 ---
 
 ## Analisis
