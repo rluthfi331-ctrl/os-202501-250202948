@@ -11,6 +11,7 @@ Topik: Virtualisasi Menggunakan Virtual Machine
 | :--- | :--- | :--- |
 | LUTHFI AULIA RAHMAN | 250202948 | 1 IKRB |
 | MUHAMMAD FATIKH MAHSUN | 250202952 | 1 IKRB |
+| APRIL TRIADI | 250202930 | 1 IKRB |
 
 ---
 
