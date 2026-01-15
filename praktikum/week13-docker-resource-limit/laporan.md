@@ -38,49 +38,94 @@ Setelah menyelesaikan tugas ini, mahasiswa mampu:
 ---
 
 ## Langkah Praktikum
-1.
+1. Persiapan Lingkungan
 
+- Pastikan Docker terpasang dan berjalan.
+- Verifikasi:
+```
+docker version
+docker ps
+```
+2. Membuat Aplikasi/Skrip Uji
+
+Buat program sederhana di folder code/ (bahasa bebas) yang:
+
+- Melakukan komputasi berulang (untuk mengamati limit CPU), dan/atau
+- Mengalokasikan memori bertahap (untuk mengamati limit memori).
+Membuat Dockerfile
+
+3. Tulis Dockerfile untuk menjalankan program uji.
+Build image:
+docker build -t week13-resource-limit .
+Menjalankan Container Tanpa Limit
+
+4. Jalankan container normal:
+docker run --rm week13-resource-limit
+Catat output/hasil pengamatan.
+Menjalankan Container Dengan Limit Resource
+
+5. Jalankan container dengan batasan resource (contoh):
+
+```
+docker run --rm --cpus="0.5" --memory="256m" week13-resource-limit
+```
+- Catat perubahan perilaku program (mis. lebih lambat, error saat memori tidak cukup, dll.).
+
+6. Monitoring Sederhana
+
+- Jalankan container (tanpa --rm jika perlu) dan amati penggunaan resource:
+```
+docker stats
+```
+- Ambil screenshot output eksekusi dan/atau docker stats.
+7. Commit & Push
+```
+git add .
+git commit -m "Minggu 13 - Docker Resource Limit"
+git push origin main
+```
 ---
 
 ## Kode / Perintah
+ Tuliskan potongan kode atau perintah utama:
+ python
+ ```
+ FROM python:3.9-slim
+WORKDIR /app
+COPY app.py .
+CMD ["python", "app.py"]
 
+# Membangun image dari folder code
+docker build -t week13-resource-limit .
+
+# Menjalankan dengan pembatasan RAM 200MB dan CPU 0.5
+docker run --rm --cpus="0.5" --memory="200m" week13-resource-limit
+
+```
 
 ---
 
 ## Hasil Eksekusi
+![alt text](docker.jpeg)
 
 ---
 
 ## Analisis
-1. Memori: Stabilitas vs. Ketersediaan
-- Mekanisme: RAM bersifat finite (terbatas). Jika container melebihi Hard Limit, kernel akan melakukan termination (OOM Kill).
-
-- Analisis: Limitasi memori wajib ada untuk mencegah memory leak dari satu container yang bisa mengakibatkan seluruh sistem (Host) freeze atau mati total.
-
-2. CPU: Keadilan vs. Performa
-- Mekanisme: Berbeda dengan RAM, CPU menggunakan sistem time-slicing. Jika jatah CPU habis, container tidak mati, tapi hanya mengalami throttling (pelambatan proses).
-
-- Analisis: Pengaturan --cpus memberikan kepastian performa (predictable performance), sedangkan --cpu-shares memastikan distribusi beban yang adil saat server sedang sibuk (load tinggi).
+Program berjalan normal saat Docker tidak diberi batasan CPU dan memori, bahkan bisa menggunakan RAM hingga 500 MB. Namun, ketika dijalankan dengan limit CPU 0.5 core dan RAM 200 MB, container langsung berhenti karena kebutuhan memori melebihi batas. Hal ini menunjukkan bahwa pengaturan resource limit di Docker sangat memengaruhi jalannya aplikasi.
 
 ---
 
 ## Kesimpulan
-1. Isolasi adalah Proteksi: Fitur ini mencegah efek noisy neighbor, di mana satu container yang bermasalah (misal: memory leak) nggak bakal narik seluruh sistem host buat ikut crash.
-
-2. Prediktabilitas Layanan: Dengan limitasi yang jelas (--memory dan --cpus), kita bisa ngejamin performa aplikasi jadi lebih stabil dan gampang diprediksi, karena jatah resource-nya udah dikunci dari awal.
-
-3. Efisiensi Infrastruktur: Kita jadi lebih pinter dalam capacity planning. Kita bisa maksimalin jumlah container dalam satu server tanpa takut overload, karena setiap container udah punya "pagar" masing-masing lewat mekanisme cgroups.
-
-Intinya: Lebih baik satu container yang lambat atau restart sendiri karena kena limit, daripada satu server yang freeze total dan bikin semua layanan tewas barengan.
+Dockerfile berhasil digunakan untuk membangun image dan menjalankan aplikasi Python dengan baik. Saat container dijalankan tanpa batasan resource, program dapat berjalan normal. Namun, ketika container dijalankan dengan pembatasan CPU 0.5 core dan RAM 200 MB, kinerja aplikasi menjadi terbatas dan berpotensi berhenti jika kebutuhan memori melebihi batas. Hal ini menunjukkan bahwa pengaturan resource limit pada Docker sangat berpengaruh terhadap jalannya dan kestabilan aplikasi.
 
 ---
 
 ## Quiz
 1. Mengapa container perlu dibatasi CPU dan memori?
 
-jawaban:
+   jawaban:
 
-Kenapa Container Harus Dibatasi?
+   Kenapa Container Harus Dibatasi?
 -  Mencegah Efek "Noisy Neighbor": Biar nggak ada satu container yang "maruk" makan semua RAM/CPU, yang bisa bikin container lain di server yang sama jadi lemot atau mati.
 
 -  Menjaga Stabilitas Server (Host): Biar server utama lo nggak freeze atau hang. Kalau RAM server habis total, Linux bakal otomatis matiin proses secara acak (OOM Kill), dan itu bahaya buat OS.
