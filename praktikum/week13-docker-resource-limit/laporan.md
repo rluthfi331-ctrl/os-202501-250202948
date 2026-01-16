@@ -106,7 +106,14 @@ docker run --rm --cpus="0.5" --memory="200m" week13-resource-limit
 ---
 
 ## Hasil Eksekusi
-![alt text](docker.jpeg)
+![screenshot1](https://github.com/user-attachments/assets/e1c74774-fc7b-4b61-bb3e-792c6574618a)
+![screenshot2](https://github.com/user-attachments/assets/28430d9d-7583-4ee8-b777-819f1773bade)
+![screenshot3](https://github.com/user-attachments/assets/1351b169-b439-47a2-a152-acee322719da)
+![screenshot4](https://github.com/user-attachments/assets/bbca0b31-a5c6-4136-a0f4-906d26d8ce07)
+
+
+
+
 
 ---
 
